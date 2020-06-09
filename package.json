@@ -1,7 +1,7 @@
 {
-  "name": "@devpaul/present-base",
+  "name": "@devpaul/TS-3.9-slides",
   "version": "0.0.1",
-  "description": "Presentation Base",
+  "description": "TypeScript 3.8 & 3.9 Features",
   "author": "Paul Shannon",
   "license": "MPL-2.0",
   "scripts": {
