@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>TypeScript 3.7, 3.8, 3.9+</title>
+
+		<meta name="description" content="Important new features TS 3.7 - 3.9+" />
+		<meta name="author" content="Paul Shannon" />
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+		/>
+
+		<link rel="stylesheet" href="node_modules/reveal.js/css/reveal.css" />
+		<link rel="stylesheet" href="node_modules/reveal.js/css/theme/sky.css" id="theme" />
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="node_modules/reveal.js/lib/css/zenburn.css" />
+		<link rel="stylesheet" href="resources/main.css" />
+
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match(/print-pdf/gi)
+				? 'node_modules/reveal.js/css/print/pdf.css'
+				: 'node_modules/reveal.js/css/print/paper.css';
+			document.getElementsByTagName('head')[0].appendChild(link);
+		</script>
+	</head>
+
+	<body>
+		<template id="footer">
+			<footer>Paul Shannon</footer>
+		</template>
+		<template>
+			<aside class="notes">
+				<!-- TODO add comments here -->
+			</aside>
+		</template>
+		<template>
+			<div class="fragment">
+				<!-- Displays as a fragment -->
+			</div>
+		</template>
+		<template>
+			<pre><code data-trim data-noescape>
+				<!-- insert code -->
+			</code></pre>
+		</template>
+
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<!-- TODO title -->
+				<section>
+					<h2>What's New In TypeScript</h2>
+					<h3>3.8 & 3.9</h3>
+				</section>
+
+				<section>
+					<div>
+						<div>
+							<h3>Paul Shannon</h3>
+						</div>
+						<div>
+							<ul>
+								<li class="github no-style">
+									<a href="https://github.com/devpaul">devpaul</a>
+								</li>
+								<li class="twitter no-style">
+									<a href="https://twitter.com/developerPaul">@developerPaul</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h1>TypeScript 3.8</h1>
+				</section>
+
+				<section>
+					<h3>Private Fields</h3>
+				</section>
+
+				<section>
+					<pre><code data-trim data-noescape>
+						class Person {
+							#name: string;
+
+							constructor(first: string, last: string = '') {
+								this.#name = first + last;
+							}
+
+							get name() {
+								return this.#name;
+							}
+						}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Type-only imports and exports</h3>
+
+					<pre><code data-trim data-noescape>
+						class InternalClass {
+							get type() {
+								return 'internal';
+							}
+						}
+
+						export class MyClass extends InternalClass {}
+
+						export type { InternalClass };
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Quality of Life</h3>
+
+					<ul>
+						<li class="fragment"><code>export * as something from './something'</code></li>
+						<li class="fragment">Top-level await</li>
+						<li class="fragment">Better change watching</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>TypeScript 3.9</h1>
+				</section>
+
+				<section data-section="TS 3.9">
+					<h3>//@ts-expect-error</h3>
+
+					<p class="fragment">
+						Suppresses an error on the following line similar to <code>ts-ignore</code>
+						but produces an error when an error doesn't exist
+					</p>
+				</section>
+
+				<section>
+					<h2>Fixes</h2>
+				</section>
+
+				<section data-section="TS 3.9 Fixes">
+					<h3>Fixes for Promise</h3>
+
+					<p class="fragment">
+						<code>Promise.all</code> and <code>Promise.race</code> were spreading <code>undefined</code> and
+						<code>null</code> types in the result array.
+					</p>
+				</section>
+
+				<section data-section="TS 3.9 Fixes">
+					<h3>Uncalled function checks</h3>
+
+					<p class="fragment">
+						Ternaries now check if functions are used in place of a boolean
+					</p>
+				</section>
+
+				<section data-section="TS 3.9 Fixes">
+					<pre><code data-trim data-noescape>
+						function myFunc() {}
+
+						// TypeScript 3.7 behavior
+						if (myFunc) {
+							console.log('hello');
+						}
+
+						// TypeScript 3.9
+						const a = myFunc ? 'a' : 'b';
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Coming Soon</h2>
+				</section>
+
+				<section data-section="awaited type">
+					<h2>awaited type</h2>
+
+					<p><code>awaited</code> is a new type that correctly unravels Promise&lt;T&gt; types</p>
+				</section>
+
+				<section data-section="awaited type">
+					<pre><code data-trim data-noescape>
+						function promiseWrap&lt;T&gt;(value: T): Promise&lt;T&gt; {
+							return Promise.resolve(value);
+						}
+
+						// type Promise&lt;number&gt;
+						const value = promiseWrap(1);
+
+						// type Promise&lt;Promise&lt;number&gt;&gt;
+						const wrapped = promiseWrap(Promise.resolve(1));
+
+						// type Promise&lt;number&gt;
+						const unwrapped = async () =&gt; await wrapped;
+					</code></pre>
+				</section>
+
+				<section data-section="awaited type">
+					<pre><code data-trim data-noescape>
+						// written with awaited
+						function promiseWrap&lt;T&gt;(value: awaited T): Promise&lt;awaited T&gt; {
+							return Promise.resolve(value);
+						}
+
+						// type Promise&lt;number&gt;
+						const value = promiseWrap(1);
+
+						// type Promise&lt;number&gt;
+						const wrapped = promiseWrap(Promise.resolve(1));
+
+						// type number
+						const unwrapped = async () =&gt; await wrapped;
+					</code></pre>
+				</section>
+			</div>
+		</div>
+
+		<script src="node_modules/reveal.js/lib/js/head.min.js"></script>
+		<script src="node_modules/reveal.js/js/reveal.js"></script>
+		<script src="src/index.js"></script>
+	</body>
+</html>
