@@ -1,0 +1,16 @@
+{
+	"servers": [
+		{
+			"port": 8765,
+			"services": [
+				{
+					"name": "file",
+					"basePath": ".",
+					"routes": {
+						"*": "."
+					}
+				}
+			]
+		}
+	]
+}
